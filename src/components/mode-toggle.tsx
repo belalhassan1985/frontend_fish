@@ -5,12 +5,6 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 // Note: Shadcn DropdownMenu wasn't in my initial add list, I added 'dialog' but maybe not dropdown-menu.
 // I will use Button toggle cycle for simplicity if Dropdown is missing, or ask user. 
