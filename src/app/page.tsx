@@ -65,7 +65,7 @@ export default async function Home() {
               تأسس عام 2022
             </span>
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-none drop-shadow-2xl">
-              ASIAN <br /> <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">FARM CENTER</span>
+              مركز <br /> <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">المزرعة الآسيوية</span>
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               الفن الطبيعي في منزلك. تشكيلة نادرة من أسماك الزينة والنباتات المائية.
