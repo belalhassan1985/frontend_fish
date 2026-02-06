@@ -26,6 +26,7 @@ type Category = {
     children?: Category[];
     isActive: boolean;
     sortOrder: number;
+    imageUrl?: string;
 };
 
 export default function SettingsPage() {
