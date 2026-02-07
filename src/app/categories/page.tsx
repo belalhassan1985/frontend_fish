@@ -4,10 +4,19 @@ import { ArrowLeft } from "lucide-react";
 
 async function getCategories() {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/categories`, { next: { revalidate: 3600 } });
-        if (!res.ok) return [];
-        return res.json();
+        const baseUrl = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const url = `${baseUrl}/categories`;
+        console.log(`[CategoriesPage] Fetching: ${url}`);
+        const res = await fetch(url, { next: { revalidate: 3600 } });
+        if (!res.ok) {
+            console.error(`[CategoriesPage] Failed. Status: ${res.status}`);
+            return [];
+        }
+        const data = await res.json();
+        console.log(`[CategoriesPage] Success. Count: ${data.length}`);
+        return data;
     } catch (e) {
+        console.error(`[CategoriesPage] Error:`, e);
         return [];
     }
 }
