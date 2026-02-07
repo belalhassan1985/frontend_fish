@@ -6,7 +6,7 @@ import { ArrowLeft, Sparkles, Leaf } from "lucide-react";
 
 async function getFeaturedProducts() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/products?featured=true`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/products?sort=createdAt&order=desc&limit=12`, { cache: 'no-store' });
     if (!res.ok) return [];
     return res.json();
   } catch (e) {
