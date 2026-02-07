@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, Package, Settings, LogOut, Menu, X } from "lucide-react";
+import { Home, Package, Settings, LogOut, Menu, X, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
@@ -38,6 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <nav className="flex-1 space-y-2">
                 <NavItem href="/admin/dashboard" icon={<Home size={20} />} label="نظرة عامة" active={pathname === '/admin/dashboard'} />
                 <NavItem href="/admin/products" icon={<Package size={20} />} label="المنتجات" active={pathname.startsWith('/admin/products')} />
+                <NavItem href="/admin/users" icon={<Users size={20} />} label="المستخدمين" active={pathname.startsWith('/admin/users')} />
                 <NavItem href="/admin/settings" icon={<Settings size={20} />} label="الإعدادات" active={pathname.startsWith('/admin/settings')} />
             </nav>
 

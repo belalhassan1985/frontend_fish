@@ -30,6 +30,7 @@ export default function AdminLoginPage() {
                 // Determine if window is defined (client-side)
                 if (typeof window !== 'undefined') {
                     localStorage.setItem('admin_token', res.accessToken);
+                    localStorage.setItem('admin_role', res.user.role);
                 }
                 router.push('/admin/dashboard');
             } else {
