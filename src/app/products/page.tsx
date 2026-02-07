@@ -18,7 +18,7 @@ async function getProducts(searchParams: any) {
 
 async function getCategories() {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/categories`, { next: { revalidate: 3600 } });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/categories`, { cache: 'no-store' });
         return res.ok ? res.json() : [];
     } catch (e) { return []; }
 }
