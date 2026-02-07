@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Menu, Search, Fish, Trash2 } from "lucide-react";
+import { ShoppingCart, Menu, Search, Fish, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/store/useCart";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -15,12 +15,16 @@ export function Header() {
     const cart = useCart();
     const [isClient, setIsClient] = useState(false);
     const [q, setQ] = useState("");
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => setIsClient(true), []);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        if (q.trim()) router.push(`/products?q=${encodeURIComponent(q)}`);
+        if (q.trim()) {
+            router.push(`/products?q=${encodeURIComponent(q)}`);
+            setIsSearchOpen(false);
+        }
     };
 
     const getMediaUrl = (url: string) => {
@@ -41,21 +45,38 @@ export function Header() {
                             <SheetHeader>
                                 <SheetTitle>القائمة</SheetTitle>
                             </SheetHeader>
-                            <div className="flex flex-col gap-4 mt-6">
-                                <Link href="/" className="text-lg font-medium">الرئيسية</Link>
-                                <Link href="/categories" className="text-lg font-medium">الأقسام</Link>
-                                <Link href="/products" className="text-lg font-medium">كل المنتجات</Link>
+                            <div className="flex flex-col gap-6 mt-6">
+                                <Link href="/" className="flex items-center gap-4 text-lg font-medium hover:text-primary transition-colors">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary"><Fish size={20} /></div>
+                                    الرئيسية
+                                </Link>
+                                <Link href="/categories" className="flex items-center gap-4 text-lg font-medium hover:text-primary transition-colors">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary"><Menu size={20} /></div>
+                                    الأقسام
+                                </Link>
+                                <Link href="/products" className="flex items-center gap-4 text-lg font-medium hover:text-primary transition-colors">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary"><ShoppingBag size={20} /></div>
+                                    كل المنتجات
+                                </Link>
+                            </div>
+                            <div className="mt-auto pt-6 border-t">
+                                <p className="text-sm text-muted-foreground text-center">مركز المزرعة الآسيوية © 2024</p>
                             </div>
                         </SheetContent>
                     </Sheet>
+
+                    {/* Mobile Search Toggle */}
+                    <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                        <Search className="h-5 w-5" />
+                    </Button>
                 </div>
 
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                    <Fish className="h-8 w-8 text-primary" />
+                <Link href="/" className="flex items-center gap-2 font-bold text-base md:text-xl relative z-10">
+                    <Fish className="h-6 w-6 md:h-8 md:w-8 text-primary" />
                     <div className="flex flex-col">
-                        <span className="leading-none tracking-tight">مركز المزرعة الآسيوية</span>
-                        <span className="text-[10px] text-muted-foreground font-normal tracking-wider">ASIAN FARM CENTER</span>
+                        <span className="leading-none tracking-tight whitespace-nowrap">مركز المزرعة الآسيوية</span>
+                        <span className="text-[8px] md:text-[10px] text-muted-foreground font-normal tracking-wider">ASIAN FARM CENTER</span>
                     </div>
                 </Link>
 
@@ -156,6 +177,31 @@ export function Header() {
                     </Sheet>
                 </div>
             </div>
+
+            {/* Mobile Search Overlay */}
+            {isSearchOpen && (
+                <div className="absolute top-16 left-0 w-full bg-background border-b p-4 animate-in slide-in-from-top-2 md:hidden">
+                    <form onSubmit={handleSearch} className="relative">
+                        <Search className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            autoFocus
+                            placeholder="ابحث عن منتج..."
+                            className="pr-10"
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                        />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute left-1 top-1 h-8 px-2 text-xs"
+                            onClick={() => setIsSearchOpen(false)}
+                        >
+                            إلغاء
+                        </Button>
+                    </form>
+                </div>
+            )}
         </header>
     );
 }

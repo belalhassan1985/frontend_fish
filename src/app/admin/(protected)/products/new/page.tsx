@@ -181,7 +181,7 @@ export default function AddProductPage() {
                 {/* Basic Info */}
                 <Card className="bg-zinc-900 border-zinc-800">
                     <CardContent className="p-6 space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>اسم المنتج (عربي)</Label>
                                 <Input required value={formData.nameAr} onChange={e => setFormData({ ...formData, nameAr: e.target.value })} className="bg-black" />
@@ -192,7 +192,7 @@ export default function AddProductPage() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-2">
                                 <Label>السعر (د.ع)</Label>
                                 <Input type="number" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="bg-black" />

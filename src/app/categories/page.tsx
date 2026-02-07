@@ -102,7 +102,7 @@ export default async function CategoriesPage() {
                     <div>
                         <h4 className="font-bold mb-6 text-lg">تواصل معنا</h4>
                         <ul className="space-y-3 text-sm text-gray-400">
-                            <li>بغداد، العراق</li>
+                            <li>العراق - بغداد - سوق الغزل</li>
                             <li dir="ltr" className="hover:text-white transition-colors cursor-pointer">{process.env.NEXT_PUBLIC_CONTACT_PHONE}</li>
                             <li>info@asianfarm.com</li>
                         </ul>

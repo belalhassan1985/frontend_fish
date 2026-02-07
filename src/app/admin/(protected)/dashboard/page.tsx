@@ -9,7 +9,7 @@ export default function DashboardPage() {
                 <StatCard title="الأرباح" value="1,234 د.ع" />
             </div>
 
-            <div className="mt-12 p-8 border border-zinc-800 rounded-xl bg-zinc-900/50 flex flex-col items-center justify-center text-center min-h-[300px]">
+            <div className="mt-12 p-4 md:p-8 border border-zinc-800 rounded-xl bg-zinc-900/50 flex flex-col items-center justify-center text-center min-h-[300px]">
                 <h3 className="text-xl font-bold mb-2">إدارة متجرك</h3>
                 <p className="text-zinc-500 max-w-md mb-6">اختر "المنتجات" من القائمة الجانبية للبدء في إضافة أو تعديل أو حذف العناصر من الكتالوج الخاص بك.</p>
             </div>

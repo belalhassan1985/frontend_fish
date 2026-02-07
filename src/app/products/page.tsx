@@ -1,3 +1,4 @@
+import { MobileCategoryNav } from "@/components/product/mobile-category-nav";
 import { Header } from "@/components/layout/header";
 import { fetcher } from "@/lib/api";
 import Link from "next/link";
@@ -35,8 +36,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
             <Header />
             <main className="container py-8">
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Sidebar Filters */}
-                    <aside className="w-full md:w-64 flex-shrink-0 space-y-8">
+                    {/* Sidebar Filters - Desktop Only */}
+                    <aside className="hidden md:block w-64 flex-shrink-0 space-y-8">
                         <div>
                             <h3 className="font-bold mb-4">الأقسام</h3>
                             <div className="flex flex-col gap-2">
@@ -62,6 +63,9 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
 
                     {/* Grid */}
                     <div className="flex-1">
+                        {/* Mobile Category Nav */}
+                        <MobileCategoryNav categories={categories} currentSlug={resolvedParams.categorySlug} />
+
                         <h1 className="text-2xl font-bold mb-6">
                             {resolvedParams.q ? `نتائج البحث عن: "${resolvedParams.q}"` :
                                 resolvedParams.categorySlug ? 'المنتجات في القسم' : 'كل المنتجات'}

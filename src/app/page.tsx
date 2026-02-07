@@ -64,8 +64,8 @@ export default async function Home() {
             <span className="inline-block py-2 px-4 border border-white/30 rounded-full text-xs font-bold tracking-[0.1em] backdrop-blur-md bg-white/5 animate-in fade-in zoom-in duration-1000">
               تأسس عام 2022
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-none drop-shadow-2xl">
-              مركز <br /> <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">المزرعة الآسيوية</span>
+            <h1 className="text-3xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-none drop-shadow-2xl">
+              مركز <br className="hidden md:inline" /> <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">المزرعة الآسيوية</span>
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               الفن الطبيعي في منزلك. تشكيلة نادرة من أسماك الزينة والنباتات المائية.
@@ -110,29 +110,55 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Moving Banner / Brand Values */}
-        <section className="py-20 bg-primary text-primary-foreground overflow-hidden">
-          <div className="container grid md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-white/5 backdrop-blur-sm">
-              <div className="p-4 bg-white/10 rounded-full mb-2"><Sparkles className="w-8 h-8" /></div>
-              <div>
-                <h4 className="font-bold text-xl mb-1">جودة آسيوية</h4>
-                <p className="text-sm opacity-90">سلالات نادرة ومميزة بأعلى المعايير العالمية</p>
+        {/* Moving Banner / Brand Values - Mobile Slider / Desktop Grid */}
+        <section className="py-12 md:py-20 relative overflow-hidden">
+          {/* Background glow effect */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-full bg-primary/5 blur-[100px] -z-10 rounded-full pointer-events-none" />
+
+          <div className="container">
+            {/* Mobile: Horizontal Scroll Snap | Desktop: Grid */}
+            <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 overflow-x-auto snap-x snap-mandatory pb-6 md:pb-0 px-4 md:px-0 -mx-4 md:mx-0 scrollbar-hide">
+
+              {/* Feature 1 */}
+              <div className="min-w-[85vw] md:min-w-0 snap-center flex flex-col items-center text-center p-6 md:p-8 rounded-3xl bg-secondary/30 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
+                  <Sparkles className="w-8 h-8" />
+                </div>
+                <h4 className="font-bold text-xl mb-2">جودة آسيوية</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  نستورد بحب سلالات نادرة ومميزة تضفي سحراً خاصاً على مساحتك، بمعايير عالمية لا تقبل المنافسة.
+                </p>
               </div>
+
+              {/* Feature 2 */}
+              <div className="min-w-[85vw] md:min-w-0 snap-center flex flex-col items-center text-center p-6 md:p-8 rounded-3xl bg-secondary/30 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
+                  <Leaf className="w-8 h-8" />
+                </div>
+                <h4 className="font-bold text-xl mb-2">نباتات طبيعية</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  تشكيلة واسعة من النباتات المائية الطبيعية لخلق نظام بيئي متوازن وجمالي داخل حوضك.
+                </p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="min-w-[85vw] md:min-w-0 snap-center flex flex-col items-center text-center p-6 md:p-8 rounded-3xl bg-secondary/30 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
+                  <Fish className="w-8 h-8" />
+                </div>
+                <h4 className="font-bold text-xl mb-2">صحة مضمونة</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  رعاية بيطرية دقيقة وفترة حجر صحي لضمان وصول أسماكك بصحة ممتازة ونشاط حيوي.
+                </p>
+              </div>
+
             </div>
-            <div className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-white/5 backdrop-blur-sm">
-              <div className="p-4 bg-white/10 rounded-full mb-2"><Leaf className="w-8 h-8" /></div>
-              <div>
-                <h4 className="font-bold text-xl mb-1">نباتات طبيعية</h4>
-                <p className="text-sm opacity-90">تشكيلة واسعة من النباتات لأحواض أكثر جمالاً وحيوية</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-4 p-6 rounded-2xl bg-white/5 backdrop-blur-sm">
-              <div className="p-4 bg-white/10 rounded-full mb-2"><Fish className="w-8 h-8" /></div>
-              <div>
-                <h4 className="font-bold text-xl mb-1">صحة مضمونة</h4>
-                <p className="text-sm opacity-90">رعاية بيطرية كاملة لضمان وصول الأسماك بصحة ممتازة</p>
-              </div>
+
+            {/* Pagination Dots (Mobile Only Visual Indicator) */}
+            <div className="flex md:hidden justify-center gap-2 mt-4">
+              <div className="w-2 h-2 rounded-full bg-primary/50" />
+              <div className="w-2 h-2 rounded-full bg-primary/20" />
+              <div className="w-2 h-2 rounded-full bg-primary/20" />
             </div>
           </div>
         </section>
@@ -204,7 +230,7 @@ export default async function Home() {
           <div>
             <h4 className="font-bold mb-6 text-lg">تواصل معنا</h4>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li>بغداد، العراق</li>
+              <li>العراق - بغداد - سوق الغزل</li>
               <li dir="ltr" className="hover:text-white transition-colors cursor-pointer">{process.env.NEXT_PUBLIC_CONTACT_PHONE}</li>
               <li>info@asianfarm.com</li>
             </ul>
