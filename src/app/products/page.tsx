@@ -1,9 +1,9 @@
 import { MobileCategoryNav } from "@/components/product/mobile-category-nav";
+import { QuickAddButton } from "@/components/product/quick-add-button";
 import { Header } from "@/components/layout/header";
-import { fetcher } from "@/lib/api";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 async function getProducts(searchParams: any) {
     const params = new URLSearchParams(searchParams);
@@ -66,6 +66,10 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                         {/* Mobile Category Nav */}
                         <MobileCategoryNav categories={categories} currentSlug={resolvedParams.categorySlug} />
 
+                        <Breadcrumbs items={[
+                            { label: 'الرئيسية', href: '/' },
+                            { label: resolvedParams.q ? `بحث: ${resolvedParams.q}` : (resolvedParams.categorySlug ? 'التصنيف' : 'المنتجات') },
+                        ]} />
                         <h1 className="text-2xl font-bold mb-6">
                             {resolvedParams.q ? `نتائج البحث عن: "${resolvedParams.q}"` :
                                 resolvedParams.categorySlug ? 'المنتجات في القسم' : 'كل المنتجات'}
@@ -79,29 +83,31 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                         ) : (
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                 {products.map((product: any) => (
-                                    <Link key={product.id} href={`/product/${product.slug}`}>
-                                        <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden border-none shadow-sm">
-                                            <div className="aspect-square relative overflow-hidden bg-white">
+                                    <Card key={product.id} className="h-full hover:shadow-lg transition-shadow overflow-hidden bg-card border border-white/5 shadow-sm group">
+                                        <Link href={`/product/${product.slug}`}>
+                                            <div className="aspect-square relative overflow-hidden bg-muted">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
                                                     src={getImageUrl(product.media?.[0]?.url) || '/placeholder.png'}
                                                     alt={product.nameAr}
-                                                    className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+                                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                                                 />
                                                 {product.stockQty <= 0 && (
                                                     <span className="absolute top-2 right-2 bg-destructive text-destructive-foreground px-2 py-1 text-xs rounded">نفذت الكمية</span>
                                                 )}
                                             </div>
-                                            <CardContent className="p-4">
-                                                <h3 className="font-bold line-clamp-1 mb-1">{product.nameAr}</h3>
-                                                <p className="text-muted-foreground text-xs line-clamp-2 mb-2 h-8">{product.description}</p>
-                                                <div className="flex justify-between items-center mt-auto">
-                                                    <span className="font-bold text-primary">{Number(product.price).toLocaleString()} د.ع</span>
-                                                    <Button size="sm" variant="secondary" className="rounded-full shadow-sm">شراء</Button>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </Link>
+                                        </Link>
+                                        <CardContent className="p-4 flex flex-col gap-1">
+                                            <Link href={`/product/${product.slug}`} className="hover:text-primary transition-colors">
+                                                <h3 className="font-bold line-clamp-1">{product.nameAr}</h3>
+                                            </Link>
+                                            <p className="text-muted-foreground text-xs line-clamp-2">{product.description}</p>
+                                            <div className="flex justify-between items-center mt-2">
+                                                <span className="font-bold text-primary">{Number(product.price).toLocaleString()} د.ع</span>
+                                                <QuickAddButton product={product} />
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 ))}
                             </div>
                         )}

@@ -16,21 +16,23 @@ export function AddToCart({ product }: { product: any }) {
         setTimeout(() => setAdded(false), 2000);
     };
 
+    if (product.stockQty <= 0) return null;
+
     return (
-        <div className="flex flex-col gap-4">
-            <div className="flex gap-4 items-center">
-                <div className="flex items-center border rounded-md bg-background">
-                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-4 py-2 hover:bg-muted transition-colors">-</button>
-                    <span className="px-4 font-medium w-12 text-center">{qty}</span>
-                    <button onClick={() => setQty(Math.min(product.stockQty, qty + 1))} className="px-4 py-2 hover:bg-muted transition-colors">+</button>
+        <div className="flex flex-col gap-3">
+            <div className="flex gap-3 items-center">
+                <div className="flex items-center border rounded-md bg-background shrink-0">
+                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-2 hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center text-lg">-</button>
+                    <span className="px-3 font-medium w-10 text-center">{qty}</span>
+                    <button onClick={() => setQty(Math.min(product.stockQty, qty + 1))} className="px-3 py-2 hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center text-lg">+</button>
                 </div>
-                <Button onClick={handleAdd} className="flex-1 py-6 text-lg" disabled={product.stockQty <= 0}>
-                    <ShoppingCart className="mr-2 h-5 w-5" />
-                    {product.stockQty > 0 ? (added ? 'تمت الإضافة ✓' : 'إضافة للسلة') : 'نفذت الكمية'}
+                <Button onClick={handleAdd} className="flex-1 h-12 text-base font-bold gap-2" disabled={product.stockQty <= 0}>
+                    <ShoppingCart className="h-5 w-5" />
+                    {added ? 'تمت الإضافة ✓' : 'إضافة للسلة'}
                 </Button>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-                {product.stockQty > 0 ? `متوفر ${product.stockQty} قطعة` : 'غير متوفر حالياً'}
+            <p className="text-xs text-muted-foreground">
+                متوفر {product.stockQty} قطعة
             </p>
         </div>
     )

@@ -1,9 +1,11 @@
 import { Header } from "@/components/layout/header";
 import { AddToCart } from "@/components/product/add-to-cart";
+import { StickyAddToCartBar } from "@/components/product/sticky-add-to-cart-bar";
 import { ProductGallery } from "@/components/product/product-gallery";
-import { Separator } from "@/components/ui/separator";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { BackButton } from "@/components/ui/back-button";
+import { Check, X } from "lucide-react";
 
 import { Metadata } from "next";
 
@@ -57,6 +59,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     return <div>Product not found</div>;
   }
 
+  const inStock = product.stockQty > 0;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -72,7 +76,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       url: `https://asianfarmcenter.com/product/${product.slug}`,
       priceCurrency: 'IQD',
       price: product.price,
-      availability: product.isInStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability: inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
     }
   };
 
@@ -83,43 +87,68 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main className="container py-8 md:py-12">
-        <BackButton />
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+      <main className="container py-4 md:py-12">
+        <div className="flex items-center justify-between mb-2">
+          <BackButton />
+        </div>
+        <Breadcrumbs items={[
+          { label: 'الرئيسية', href: '/' },
+          { label: 'المنتجات', href: '/products' },
+          { label: product.nameAr },
+        ]} />
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-12 mt-4">
           {/* Gallery */}
           <ProductGallery media={product.media} />
 
           {/* Info */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <div>
               {product.category && <Badge variant="secondary" className="mb-2">{product.category.nameAr}</Badge>}
-              <h1 className="text-3xl font-bold">{product.nameAr}</h1>
-              {product.nameEn && <h2 className="text-xl text-muted-foreground dir-ltr text-right">{product.nameEn}</h2>}
+              <h1 className="text-2xl md:text-3xl font-bold">{product.nameAr}</h1>
+              {product.nameEn && <h2 className="text-lg text-muted-foreground dir-ltr text-right">{product.nameEn}</h2>}
             </div>
 
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-3xl font-bold text-primary">
               {Number(product.price).toLocaleString()} د.ع
             </div>
 
-            <Separator />
-
-            <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-loose">
-              {product.description}
+            <div className="flex items-center gap-2">
+              {inStock ? (
+                <Badge variant="outline" className="border-green-500/40 text-green-400 bg-green-500/5 gap-1 px-3 py-1">
+                  <Check className="w-3.5 h-3.5" /> متوفر
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="border-destructive/40 text-destructive bg-destructive/5 gap-1 px-3 py-1">
+                  <X className="w-3.5 h-3.5" /> غير متوفر
+                </Badge>
+              )}
+              {inStock && product.stockQty <= 5 && (
+                <span className="text-xs text-amber-400 font-medium">آخر {product.stockQty} قطع</span>
+              )}
             </div>
 
-            <div className="mt-auto">
-              <AddToCart product={product} />
-            </div>
+            <AddToCart product={product} />
 
             {/* Additional Details */}
-            <div className="bg-muted/30 p-4 rounded-lg text-sm space-y-2 mt-4">
-              <p><span className="font-semibold">الصعوبة:</span> {product.difficulty || '-'}</p>
-              <p><span className="font-semibold">نوع الماء:</span> {product.waterType || '-'}</p>
-              {product.tempCMin && <p><span className="font-semibold">الحرارة:</span> {product.tempCMin}° - {product.tempCMax}°</p>}
+            <div className="bg-card border border-white/5 p-4 rounded-lg text-sm space-y-2">
+              <p><span className="font-semibold text-foreground">الصعوبة:</span> <span className="text-muted-foreground">{product.difficulty || '-'}</span></p>
+              <p><span className="font-semibold text-foreground">نوع الماء:</span> <span className="text-muted-foreground">{product.waterType || '-'}</span></p>
+              {product.tempCMin && <p><span className="font-semibold text-foreground">الحرارة:</span> <span className="text-muted-foreground">{product.tempCMin}° - {product.tempCMax}°</span></p>}
             </div>
+
+            {/* Description */}
+            {product.description && (
+              <>
+                <hr className="border-white/10" />
+                <div className="prose dark:prose-invert max-w-none text-muted-foreground leading-loose text-sm">
+                  {product.description}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>
+      {inStock && <StickyAddToCartBar product={product} />}
     </div>
   );
 }

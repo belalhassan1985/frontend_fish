@@ -1,4 +1,5 @@
 import { Header } from "@/components/layout/header";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -90,10 +91,12 @@ export default async function CategoriesPage() {
 
             </main>
 
-            <footer className="bg-black text-white py-16 border-t border-white/10">
+            <footer className="bg-background text-white py-16 border-t border-white/10">
                 <div className="container grid md:grid-cols-4 gap-12 text-center md:text-right">
                     <div className="space-y-4">
-                        <h3 className="text-2xl font-black tracking-tight">ASIAN FARM CENTER</h3>
+                        <div className="flex items-center gap-2 justify-center md:justify-start">
+                            <h3 className="text-2xl font-black tracking-tight">مركز المزرعة الآسيوية</h3>
+                        </div>
                         <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
                             وجهتك الأولى لأسماك الزينة والنباتات المائية ومستلزمات الأحواض في العراق. نجمع بين الفن والطبيعة.
                         </p>
@@ -136,5 +139,3 @@ export default async function CategoriesPage() {
         </div>
     );
 }
-
-import { Button } from "@/components/ui/button";

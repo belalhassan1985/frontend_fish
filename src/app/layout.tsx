@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Cairo } from "next/font/google"; // or IBM Plex Sans Arabic
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { cn } from "@/lib/utils";
 
 const font = Cairo({ subsets: ["arabic"], variable: "--font-cairo" });
@@ -66,6 +67,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <MobileBottomNav />
         </ThemeProvider>
       </body>
     </html>

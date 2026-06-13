@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 export function ProductGallery({ media }: { media: any[] }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [emblaRef, emblaApi] = useEmblaCarousel({ direction: 'rtl' }); // RTL direction
+    const [emblaRef, emblaApi] = useEmblaCarousel({ direction: 'rtl' });
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return;
@@ -22,14 +22,15 @@ export function ProductGallery({ media }: { media: any[] }) {
         if (emblaApi) emblaApi.scrollTo(index);
     };
 
-    // Helper to resolve URL
     const getMediaUrl = (url: string) => url?.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}${url}`;
 
     if (!media || media.length === 0) return <div className="aspect-square bg-muted rounded-lg" />;
 
+    const totalSlides = media.length;
+
     return (
-        <div className="flex flex-col gap-4">
-            <div className="overflow-hidden rounded-xl border bg-white shadow-sm" ref={emblaRef}>
+        <div className="flex flex-col gap-3">
+            <div className="overflow-hidden rounded-xl border border-white/10 bg-card shadow-sm relative" ref={emblaRef}>
                 <div className="flex">
                     {media.map((item, index) => (
                         <div className="flex-[0_0_100%] min-w-0 relative aspect-square" key={index}>
@@ -51,30 +52,37 @@ export function ProductGallery({ media }: { media: any[] }) {
                         </div>
                     ))}
                 </div>
+                {totalSlides > 1 && (
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                        {selectedIndex + 1} / {totalSlides}
+                    </div>
+                )}
             </div>
 
             {/* Thumbs */}
-            <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-                {media.map((item, index) => (
-                    <button
-                        key={index}
-                        onClick={() => scrollTo(index)}
-                        className={cn(
-                            "relative flex-[0_0_80px] aspect-square rounded-md overflow-hidden border-2 transition-all",
-                            selectedIndex === index ? "border-primary ring-2 ring-primary/20" : "border-transparent opacity-70 hover:opacity-100"
-                        )}
-                    >
-                        {item.mediaType === 'YOUTUBE' || item.mediaType === 'VIDEO' ? (
-                            <div className="w-full h-full bg-black flex items-center justify-center text-white text-[10px] font-bold">
-                                VIDEO
-                            </div>
-                        ) : (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={getMediaUrl(item.url)} alt={item.title} className="w-full h-full object-cover" />
-                        )}
-                    </button>
-                ))}
-            </div>
+            {totalSlides > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    {media.map((item, index) => (
+                        <button
+                            key={index}
+                            onClick={() => scrollTo(index)}
+                            className={cn(
+                                "relative flex-[0_0_72px] md:flex-[0_0_80px] aspect-square rounded-md overflow-hidden border-2 transition-all",
+                                selectedIndex === index ? "border-primary ring-2 ring-primary/20" : "border-transparent opacity-70 hover:opacity-100"
+                            )}
+                        >
+                            {item.mediaType === 'YOUTUBE' || item.mediaType === 'VIDEO' ? (
+                                <div className="w-full h-full bg-black flex items-center justify-center text-white text-[10px] font-bold">
+                                    VIDEO
+                                </div>
+                            ) : (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={getMediaUrl(item.url)} alt={item.title} className="w-full h-full object-cover" />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

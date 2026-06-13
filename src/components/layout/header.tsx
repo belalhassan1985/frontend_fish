@@ -10,6 +10,24 @@ import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+function StoreLogo() {
+  const [imgError, setImgError] = useState(false);
+
+  if (imgError) {
+    return <Fish className="h-full w-full text-primary" />;
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/logo.png"
+      alt="مركز المزرعة الآسيوية"
+      className="h-full w-full object-contain"
+      onError={() => setImgError(true)}
+    />
+  );
+}
+
 export function Header() {
     const router = useRouter();
     const cart = useCart();
@@ -36,10 +54,10 @@ export function Header() {
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-16 items-center justify-between px-4 md:px-6">
                 {/* Mobile Menu */}
-                <div className="flex items-center gap-2 md:hidden">
+                <div className="flex items-center gap-1 md:hidden">
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon"><Menu /></Button>
+                            <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]"><Menu className="h-5 w-5" /></Button>
                         </SheetTrigger>
                         <SheetContent side="right">
                             <SheetHeader>
@@ -60,22 +78,24 @@ export function Header() {
                                 </Link>
                             </div>
                             <div className="mt-auto pt-6 border-t">
-                                <p className="text-sm text-muted-foreground text-center">مركز المزرعة الآسيوية © 2024</p>
+                                <p className="text-sm text-muted-foreground text-center">مركز المزرعة الآسيوية</p>
                             </div>
                         </SheetContent>
                     </Sheet>
 
                     {/* Mobile Search Toggle */}
-                    <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                    <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]" onClick={() => setIsSearchOpen(!isSearchOpen)}>
                         <Search className="h-5 w-5" />
                     </Button>
                 </div>
 
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 font-bold text-base md:text-xl relative z-10">
-                    <Fish className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                <Link href="/" className="flex items-center gap-1.5 md:gap-2 font-bold text-base md:text-xl relative z-10 min-h-[44px]">
+                    <div className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0">
+                        <StoreLogo />
+                    </div>
                     <div className="flex flex-col">
-                        <span className="leading-none tracking-tight whitespace-nowrap">مركز المزرعة الآسيوية</span>
+                        <span className="leading-none tracking-tight whitespace-nowrap text-sm md:text-base">مركز المزرعة الآسيوية</span>
                         <span className="text-[8px] md:text-[10px] text-muted-foreground font-normal tracking-wider">ASIAN FARM CENTER</span>
                     </div>
                 </Link>
@@ -98,11 +118,13 @@ export function Header() {
                 </form>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2">
-                    <ModeToggle />
+                <div className="flex items-center gap-1 md:gap-2">
+                    <div className="hidden md:flex">
+                        <ModeToggle className="min-h-[44px] min-w-[44px] md:min-h-9 md:min-w-9" />
+                    </div>
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="outline" size="icon" className="relative">
+                            <Button variant="outline" size="icon" className="relative min-h-[44px] min-w-[44px] md:min-h-9 md:min-w-9">
                                 <ShoppingCart className="h-4 w-4" />
                                 {isClient && cart.totalItems() > 0 && (
                                     <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">

@@ -11,20 +11,21 @@ import { Button } from "@/components/ui/button"
 // Actually I didn't add dropdown-menu. I'll add it now or use simple toggle.
 // I'll use simple toggle button.
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
 
     React.useEffect(() => setMounted(true), [])
 
     if (!mounted) {
-        return <Button variant="ghost" size="icon"><Sun className="h-[1.2rem] w-[1.2rem]" /></Button>
+        return <Button variant="ghost" size="icon" className={className}><Sun className="h-[1.2rem] w-[1.2rem]" /></Button>
     }
 
     return (
         <Button
             variant="ghost"
             size="icon"
+            className={className}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
