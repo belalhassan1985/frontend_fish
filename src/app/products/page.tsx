@@ -1,18 +1,19 @@
 import { MobileCategoryNav } from "@/components/product/mobile-category-nav";
-import { QuickAddButton } from "@/components/product/quick-add-button";
+import { ProductsGrid } from "@/components/product/products-grid";
 import { Header } from "@/components/layout/header";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
+
+const PAGE_SIZE = 20;
 
 async function getProducts(searchParams: any) {
     const params = new URLSearchParams(searchParams);
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/products?${params.toString()}`, { cache: 'no-store' });
-        if (!res.ok) return [];
+        if (!res.ok) return null;
         return res.json();
     } catch (e) {
-        return [];
+        return null;
     }
 }
 
@@ -25,11 +26,15 @@ async function getCategories() {
 
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<any> }) {
     const resolvedParams = await searchParams;
-    const products = await getProducts(resolvedParams);
-    const categories = await getCategories();
+    const [paginated, categories] = await Promise.all([
+        getProducts({ ...resolvedParams, page: '1', limit: String(PAGE_SIZE) }),
+        getCategories(),
+    ]);
 
-    // Helper for image URLs
-    const getImageUrl = (url: string) => url?.startsWith('http') ? url : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}${url}`;
+    const initialProducts = paginated?.data ?? [];
+    const total = paginated?.total ?? 0;
+    const totalPages = paginated?.totalPages ?? 0;
+    const searchParamsString = new URLSearchParams(resolvedParams).toString();
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -73,43 +78,19 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                         <h1 className="text-2xl font-bold mb-6">
                             {resolvedParams.q ? `نتائج البحث عن: "${resolvedParams.q}"` :
                                 resolvedParams.categorySlug ? 'المنتجات في القسم' : 'كل المنتجات'}
-                            <span className="text-sm font-normal text-muted-foreground mx-2">({products.length} منتج)</span>
+                            <span className="text-sm font-normal text-muted-foreground mx-2">({total} منتج)</span>
                         </h1>
 
-                        {products.length === 0 ? (
+                        {initialProducts.length === 0 ? (
                             <div className="text-center py-20 text-muted-foreground">
                                 لا توجد منتجات مطابقة للبحث.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {products.map((product: any) => (
-                                    <Card key={product.id} className="h-full hover:shadow-lg transition-shadow overflow-hidden bg-card border border-white/5 shadow-sm group">
-                                        <Link href={`/product/${product.slug}`}>
-                                            <div className="aspect-square relative overflow-hidden bg-muted">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img
-                                                    src={getImageUrl(product.media?.[0]?.url) || '/placeholder.png'}
-                                                    alt={product.nameAr}
-                                                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                                                />
-                                                {product.stockQty <= 0 && (
-                                                    <span className="absolute top-2 right-2 bg-destructive text-destructive-foreground px-2 py-1 text-xs rounded">نفذت الكمية</span>
-                                                )}
-                                            </div>
-                                        </Link>
-                                        <CardContent className="p-4 flex flex-col gap-1">
-                                            <Link href={`/product/${product.slug}`} className="hover:text-primary transition-colors">
-                                                <h3 className="font-bold line-clamp-1">{product.nameAr}</h3>
-                                            </Link>
-                                            <p className="text-muted-foreground text-xs line-clamp-2">{product.description}</p>
-                                            <div className="flex justify-between items-center mt-2">
-                                                <span className="font-bold text-primary">{Number(product.price).toLocaleString()} د.ع</span>
-                                                <QuickAddButton product={product} />
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
+                            <ProductsGrid
+                                initialProducts={initialProducts}
+                                searchParamsString={searchParamsString}
+                                totalPages={totalPages}
+                            />
                         )}
                     </div>
                 </div>
