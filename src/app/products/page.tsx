@@ -35,6 +35,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
     const total = paginated?.total ?? 0;
     const totalPages = paginated?.totalPages ?? 0;
     const searchParamsString = new URLSearchParams(resolvedParams).toString();
+    const gridKey = `${resolvedParams.categorySlug ?? ''}-${resolvedParams.q ?? ''}-${resolvedParams.sort ?? ''}-${resolvedParams.order ?? ''}`;
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -87,6 +88,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                             </div>
                         ) : (
                             <ProductsGrid
+                                key={gridKey}
                                 initialProducts={initialProducts}
                                 searchParamsString={searchParamsString}
                                 totalPages={totalPages}
